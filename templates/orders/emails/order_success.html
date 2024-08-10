@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            color: #333;
+        }
+        .order-details, .customer-details {
+            margin-bottom: 20px;
+        }
+        .order-details p, .customer-details p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .order-table th, .order-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .order-table th {
+            background-color: #f2f2f2;
+        }
+        .total-row {
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .footer p {
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Order Confirmation</h1>
+        </div>
+        <div class="order-details">
+            <p><strong>Order ID:</strong> {{order_obj.uuid}}</p>
+            <p><strong>Payment Date:</strong> {{order_obj.payment_on|date:'d-M-Y'}}</p>
+        </div>
+        <div class="customer-details">
+            <p><strong>Full Name:</strong> {{order_obj.user_full_name}}</p>
+            <p><strong>Phone Number:</strong> {{order_obj.user_phonenumber}}</p>
+            <p><strong>Email:</strong> {{order_obj.user_email}}</p>
+            {% if order_obj.gst_number %}
+            <p><strong>GST Number:</strong> {{order_obj.gst_number}}</p>
+            {% endif %}
+            <p><strong>Billing Address:</strong> {{order_obj.address_line_1}}, {{order_obj.address_line_2}}, {{order_obj.address_area}}, {{order_obj.address_city}}, {{order_obj.address_state}} - {{order_obj.address_pincode}}</p>
+        </div>
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Asset Title</th>
+                    <th>License Name</th>
+                    <th>Price</th>
+                    <th>Download Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order_item_obj in order_item_objs %}
+                <tr>
+                    <td><a href="http://{{site_domain}}/assets/{{order_item_obj.asset.uuid}}/?license={{order_item_obj.license.name}}">{{order_item_obj.asset.title}}</a></td>
+                    <td>{{order_item_obj.license}}</td>
+                    <td>₹{{order_item_obj.price}}</td>
+                    <td><a href="http://{{site_domain}}/assets/download-asset/{{order_obj.uuid}}/{{order_item_obj.pk}}/">Download</a></td>
+                </tr>
+                {% endfor %}
+                <tr class="total-row">
+                    <td colspan="2"></td>
+                    <td>Subtotal:</td>
+                    <td>₹{{order_obj.sub_total}}</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2"></td>
+                    <td>GST (18%):</td>
+                    <td>₹{{order_obj.gst}}</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2"></td>
+                    <td>Total Price:</td>
+                    <td>₹{{order_obj.total_price}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer">
+            <p>Thank you for your purchase!</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<!-- This heading is from order_details.html  -->
+{% endblock %}
+
+{% block content %}
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Order Detials</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'main:home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'orders:my_orders' %}">My Orders</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Order Details</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+
+<!-- tracking page start -->
+<section class="tracking-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- <h3>status for order no: 54151548</h3> -->
+                <div class="row border-part">
+                    <div class="col-xl-6 col-lg-6 col-sm-6">
+                        <div class="tracking-detail">
+                            <ul>
+                                <li>
+                                    <div class="left">
+                                        <span>Order Id</span>
+                                    </div>
+                                    <div class="right">
+                                        <span>{{order_obj.uuid}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left">
+                                        <span>Customer Full Name</span>
+                                    </div>
+                                    <div class="right">
+                                        <span>{{order_obj.user_full_name}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left">
+                                        <span>Customer Email</span>
+                                    </div>
+                                    <div class="right">
+                                        <span>{{order_obj.user_email}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left">
+                                        <span>Customer Number</span>
+                                    </div>
+                                    <div class="right">
+                                        <span>{{order_obj.user_phonenumber}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left">
+                                        <span>billing address</span>
+                                    </div>
+                                    <div class="right">
+                                        <span>{{order_obj.address_line_1}},<br>{{order_obj.address_line_2}},<br>{{order_obj.address_area}}, {{order_obj.address_city}}<br>{{order_obj.address_state}} - {{order_obj.address_pincode}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left">
+                                        <span>GST Number</span>
+                                    </div>
+                                    <div class="right">
+                                        <span>{{order_obj.gst_number}}</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-sm-8">
+                        <div class="tracking-detail">
+                            <ul>
+                                <li>
+                                    <div class="left">
+                                        <span>Order Status</span>
+                                    </div>
+                                    <div class="right">
+                                        <span>{{order_obj.get_order_status_display}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left">
+                                        <span>Sub Total</span>
+                                    </div>
+                                    <div class="right">
+                                        <span>{{order_obj.sub_total}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left">
+                                        <span>Tax(GST)</span>
+                                    </div>
+                                    <div class="right">
+                                        <span>{{order_obj.gst}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left">
+                                        <span>Total Price</span>
+                                    </div>
+                                    <div class="right">
+                                        <span>{{order_obj.total_price}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left">
+                                        <span>Order Created</span>
+                                    </div>
+                                    <div class="right">
+                                        <span>{{order_obj.date_created|date:'d M, Y | H:i:s'}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left">
+                                        <span>Payment On</span>
+                                    </div>
+                                    <div class="right">
+                                        <span>{{order_obj.payment_on|date:'d M, Y | H:i:s'}}</span>
+                                    </div>
+                                </li>
+                                {% if order_obj.order_status == 'pending' %}
+                                <li>
+                                    <div class="left">
+                                        <span>CheckOut again</span>
+                                    </div>
+                                    <div class="right">
+                                        <span><a href="{% url 'orders:checkout' order_obj.uuid %}">Click Here</a></span>
+                                    </div>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <h3>Order Items</h3>
+                </div>
+                <!-- <div class="wrapper">
+                    <div class="arrow-steps clearfix">
+                        <div class="step done"> <span> order placed</span> </div>
+                        <div class="step current"> <span>preparing to ship</span> </div>
+                        <div class="step"><span> shipped</span> </div>
+                        <div class="step"><span>delivered</span> </div>
+                    </div>
+                </div> -->
+                <div class="order-table table-responsive-sm">
+                    <table class="table mb-0 table-striped table-borderless">
+                        <thead class="">
+                            <tr>
+                                <th scope="col">Asset</th>
+                                <th scope="col">License</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Download</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order_item_obj in  order_item_objs %}
+                            <tr>
+                                <td><a target="_blank" href="{% url 'assets:asset_detail' order_item_obj.asset.uuid %}?license={{order_item_obj.license.name}}">{{order_item_obj.asset.title|truncatechars:30}}</a></td>
+                                <td>{{order_item_obj.license}}</td>
+                                <td>{{order_item_obj.price}}</td>
+                                <td>
+                                    {% if order_obj.order_status == 'success' %}
+                                    <a href="{% url 'assets:download_asset' order_obj.uuid order_item_obj.pk %}">Click Here</a>
+                                    {% else %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- tracking page end -->
+{% endblock %}
+
+{% block script %}
+<!-- This Script is from order_details.html  -->
+{% endblock %}

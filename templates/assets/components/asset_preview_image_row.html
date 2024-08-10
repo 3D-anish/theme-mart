@@ -1,0 +1,20 @@
+{% load static %}
+<tr class="add_preview_image_form_row">
+    <td><img width="200" src="{{MEDIA_URL}}{{asset_preview_image_obj.image}}" alt="preview_image"></td>
+    <td>{{asset_preview_image_obj.date_created}}</td>
+    <td>
+        <button
+        hx-trigger="click"
+        style="border: none;"
+        hx-get="{% url 'assets:delete_asset_preview_image' asset_pk asset_preview_image_obj.pk %}"
+        hx-target="closest .add_preview_image_form_row"
+        hx-swap="outerHTML"
+        hx-confirm="Are you Sure?"
+        hx-disabled-elt=".asset_preview_delete_btn"
+        hx-indicator="#delete_image_{{asset_preview_image_obj.pk}}_spinner"
+        class="cart link asset_preview_delete_btn">
+            <i class="fa fa-trash-o ms-1 text-theme"></i>
+            <img src="{% static 'images/loader.gif' %}" id="delete_image_{{asset_preview_image_obj.pk}}_spinner" class="htmx-indicator" style="width: 25px;" alt="">
+        </button>
+    </td>
+</tr>

@@ -1,0 +1,349 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<!--Google font-->
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+<!--Slick slider css-->
+<link rel="stylesheet" type="text/css" href="{% static 'css/slick.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/slick-theme.css' %}">
+<!-- Animate icon -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">
+<!-- Themify icon -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/themify-icons.css' %}">
+<!-- Bootstrap css -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+<!-- Theme css -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+<section class="dashboard-section section-b-space" style="padding-top: 0px;">
+    <div class="container">
+        <div class="row">
+            <div class="counter-section">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/order.png' %}" class="img-fluid">
+                            <div>
+                                <h3>{{total_assets}}</h3>
+                                <h5>Total Assets</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>{{total_orders}}</h3>
+                                <h5>Total Orders</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>{{total_seller}}</h3>
+                                <h5>Total Sellers</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_orders_value}}</h3>
+                                <h5>Total Orders Value</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_gst_collected}}</h3>
+                                <h5>Total GST Collected</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_razorpay_commission}}</h3>
+                                <h5>Total Razorpay Commission</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_thememart_commission}}</h3>
+                                <h5>Total ThemeMart Commission</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_seller_payment}}</h3>
+                                <h5>Total Seller Payment</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{to_be_paid}}</h3>
+                                <h5>To be paid to Seller</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>{{last_24_hours_new_assets}}</h3>
+                                <h5>Last 24 Hours New Assets</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>{{last_7_days_new_assets}}</h3>
+                                <h5>Last 7 Days New Assets</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>{{last_30_days_new_assets}}</h3>
+                                <h5>Last 30 Days New Assets</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>{{last_24_hours_orders}}</h3>
+                                <h5>Last 24 Hours Orders</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>{{last_7_days_orders}}</h3>
+                                <h5>Last 7 Days Orders</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>{{last_30_days_orders}}</h3>
+                                <h5>Last 30 Days Orders</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_24_hours_orders_value}}</h3>
+                                <h5>Last 24 Hours Orders Value</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_7_days_orders_value}}</h3>
+                                <h5>Last 7 Days Orders Value</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_30_days_orders_value}}</h3>
+                                <h5>Last 30 Days Orders Value</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_24_hours_orders_subtotal}}</h3>
+                                <h5>Last 24 Hours Orders Sub Total</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_7_days_orders_subtotal}}</h3>
+                                <h5>Last 7 Days Orders Sub Total</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_30_days_orders_subtotal}}</h3>
+                                <h5>Last 30 Days Orders Sub Total</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_24_hours_gst_collected}}</h3>
+                                <h5>Last 24 GST Collected</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_7_days_gst_collected}}</h3>
+                                <h5>Last 7 Days GST Collected</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_30_days_gst_collected}}</h3>
+                                <h5>Last 30 Days GST Collected</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_24_hours_razorpay_commission}}</h3>
+                                <h5>Last 24 Hours Razorpay Commission</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_7_days_razorpay_commission}}</h3>
+                                <h5>Last 7 Days Razorpay Commission</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_30_days_razorpay_commission}}</h3>
+                                <h5>Last 30 Days Razorpay Commission</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_24_hours_thememart_commission}}</h3>
+                                <h5>Last 24 Hours ThemeMart Commission</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_7_days_thememart_commission}}</h3>
+                                <h5>Last 7 Days ThemeMart Commission</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_30_days_thememart_commission}}</h3>
+                                <h5>Last 30 Days ThemeMart Commission</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_24_hours_seller_payment}}</h3>
+                                <h5>Last 24 Hours Seller Payment</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_7_days_seller_payment}}</h3>
+                                <h5>Last 7 Days Seller Payment</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="counter-box">
+                            <img src="{% static 'images/sale.png' %}" class="img-fluid">
+                            <div>
+                                <h3>₹ {{total_last_30_days_seller_payment}}</h3>
+                                <h5>Last 30 Days Seller Payment</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

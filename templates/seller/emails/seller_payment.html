@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 150px;
+        }
+        .content {
+            margin-bottom: 20px;
+        }
+        .footer {
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        .highlight {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://cc8b2133b4.imgdist.com/pub/bfra/67ea85q3/n9q/vua/88j/Untitled%20design%20(1).png" alt="ThemeMart Logo">
+            <h1>Payment Confirmation</h1>
+        </div>
+        <div class="content">
+            <p>Dear @{{username}},</p>
+            <p>We are pleased to inform you that ThemeMart has processed your payment for the period ending on {% now 'd/m/Y' %}.</p>
+            <p>Here is a summary of your earnings:</p>
+            <ul>
+                <li>Total Earnings: <strong>₹ {{ total_earnings }}</strong></li>
+                <li>ThemeMart & Payment Gateways' Commission: <strong>₹ {{ commission }}</strong></li>
+                <li><strong>Net Amount Paid: ₹ {{ net_amount }}</strong></li>
+            </ul>
+            <p>The net amount of <strong>₹ {{ net_amount }}</strong> has been credited to your bank account ending in {{ bank_account_last4 }}.</p>
+            <p>If you have any questions or need further assistance, please do not hesitate to contact our support team.</p>
+            <p>Thank you for being a valued member of ThemeMart!</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 ThemeMart. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

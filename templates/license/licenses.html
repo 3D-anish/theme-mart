@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<!-- This heading is from licenses.html  -->
+{% endblock %}
+
+{% block content %}
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Licenses</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'main:home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Licenses</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+<div class="title1 section-t-space">
+    <!-- <h4>special offers</h4> -->
+    <h2 class="title-inner1">Asset Categories</h2>
+</div>
+<section class="my-5">
+    <div class="row margin-default ratio_square">
+        {% for asset_category in asset_categories %}
+        <div class="col-xl-2 col-sm-3 col-4">
+            <a href="{% url 'license:category' asset_category.slug %}">
+                <div class="img-category">
+                    <div class="img-sec">
+                        {% if asset_category.image %}
+                        <img src="{{MEDIA_URL}}{{asset_category.image}}" class="img-fluid bg-img" alt="Asset Category Image">
+                        {% else %}
+                        <img src="{% static 'images/no_image_H.png' %}" class="img-fluid bg-img" alt="">
+                        {% endif %}
+                    </div>
+                    <h4>{{asset_category.name}}</h4>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}
+
+{% block script %}
+<!-- This Script is from licenses.html  -->
+{% endblock %}

@@ -1,0 +1,21 @@
+{% load static %}
+<tr class="add_preview_image_form_row">
+    <td colspan="4">
+        <form
+        hx-post="{% url 'assets:add_asset_preview_image' pk %}"
+        hx-swap="outerHTML"
+        hx-disabled-elt=".asset_preview_image_form_sub_btn"
+        hx-target="closest .add_preview_image_form_row"
+        hx-indicator="#add_asset_preview_image_btn_spinner"
+        class="d-flex" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <span style="width: 80%;">
+                    <span class="text-danger d-block mb-1">{{form.image.errors.0}}</span>
+                    {{ form.image }}
+                </span>
+            <button type="submit" class="asset_preview_image_form_sub_btn ms-2 btn btn-solid w-auto">Add
+            <img src="{% static 'images/loader.gif' %}" id="add_asset_preview_image_btn_spinner" class="htmx-indicator" style="width: 25px;" alt="">
+            </button>
+        </form>
+        </td> 
+</tr>

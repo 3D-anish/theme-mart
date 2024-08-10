@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block head %}
+<!-- This heading is from checkout.html  -->
+{% endblock %}
+
+{% block content %}
+    <!-- breadcrumb start -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="page-title">
+                        <h2>Check-out</h2>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'main:home' %}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Check-out</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb End -->
+
+
+    <!-- section start -->
+    <section class="section-b-space">
+        <div class="container">
+            <div class="checkout-page">
+                <div class="checkout-form">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-5 col-sm-12 col-xs-12">
+                                <div class="checkout-title">
+                                    <h3>Billing Details</h3>
+                                </div>
+                                <div class="row check-out">
+                                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                        <label for="{{form.user_full_name.id_for_label}}" class="field-label">Full Name <span style="color: red;">*</span></label>
+                                        <span class="text-danger d-block mb-1">{{form.user_full_name.errors.0}}</span>
+                                        {{ form.user_full_name }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                        <label for="id_email" class="field-label">Email ID <span style="color: red;">*</span></label>
+                                        <input type="text" id="id_email" readonly disabled name="email" value="{{user.email}}" placeholder="Email ID">
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                        <label for="{{form.user_phonenumber.id_for_label}}" class="field-label">Phone Number <span style="color: red;">*</span></label>
+                                        <span class="text-danger d-block mb-1">{{form.user_phonenumber.errors.0}}</span>
+                                        {{ form.user_phonenumber }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                        <label for="{{form.address_line_1.id_for_label}}" class="field-label">House No./Name <span style="color: red;">*</span></label>
+                                        <span class="text-danger d-block mb-1">{{form.address_line_1.errors.0}}</span>
+                                        {{ form.address_line_1 }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                        <label for="{{form.address_line_2.id_for_label}}" class="field-label">Landmark <span style="color: red;">*</span></label>
+                                        <span class="text-danger d-block mb-1">{{form.address_line_2.errors.0}}</span>
+                                        {{ form.address_line_2 }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                        <label for="{{form.address_area.id_for_label}}" class="field-label">Area Name <span style="color: red;">*</span></label>
+                                        <span class="text-danger d-block mb-1">{{form.address_area.errors.0}}</span>
+                                        {{ form.address_area }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                        <label for="{{form.address_city.id_for_label}}" class="field-label">City <span style="color: red;">*</span></label>
+                                        <span class="text-danger d-block mb-1">{{form.address_city.errors.0}}</span>
+                                        {{ form.address_city }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                        <label for="{{form.address_state.id_for_label}}" class="field-label">State <span style="color: red;">*</span></label>
+                                        <span class="text-danger d-block mb-1">{{form.address_state.errors.0}}</span>
+                                        {{ form.address_state }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                        <label for="{{form.address_pincode.id_for_label}}" class="field-label">Pincode <span style="color: red;">*</span></label>
+                                        <span class="text-danger d-block mb-1">{{form.address_pincode.errors.0}}</span>
+                                        {{ form.address_pincode }}
+                                    </div>
+                                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                        <label for="{{form.gst_number.id_for_label}}" class="field-label">GST Number(optional)</label>
+                                        <span class="text-danger d-block mb-1">{{form.gst_number.errors.0}}</span>
+                                        {{ form.gst_number }}
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-4 col-xs-4">
+                                        <button type="submit" class="btn btn-solid">Save Details</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-lg-7 col-sm-12 col-xs-12">
+                                <div class="checkout-details">
+                                    <div class="order-box">
+                                        <div class="title-box">
+                                            <div>Asset <span>Price</span></div>
+                                        </div>
+                                        <ul class="qty">
+                                            {% for order_item_obj in order_item_objs %}
+                                            <li><a href="{% url 'assets:asset_detail' order_item_obj.asset.uuid %}?license={{order_item_obj.license.name}}" target="_blank">{{order_item_obj.asset.title|truncatechars:10}}({{order_item_obj.license}})</a><span>₹{{order_item_obj.price|intcomma}}</span></li>
+                                            {% endfor %}
+                                        </ul>
+                                        <ul class="sub-total">
+                                            <li>Subtotal <span class="count">₹{{order_obj.sub_total|intcomma}}</span></li>
+                                            <li>(+) GST <span class="count">₹{{order_obj.gst|intcomma}}</span></li>
+                                        </ul>
+                                        <ul class="total">
+                                            <li>Total <span class="count">₹{{order_obj.total_price|intcomma}}</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="payment-box">
+                                        <div class="text-end">
+                                            {% if order_obj.is_eligibale_for_payment %}
+                                            <a href="#" class="btn-solid btn" id="rzp-button1">Make Payment</a>
+                                            {% else %}
+                                            <a href="#">Provide details to make payment</a>
+                                            {% endif %}
+                                            <a href="{% url 'orders:cancel_order' order_obj.uuid %}" class="btn-outline ms-1 btn">Cancel Order</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- section end -->
+{% endblock %}
+
+{% block script %}
+<!-- This Script is from checkout.html  -->
+{% if order_obj.is_eligibale_for_payment %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    key: "{{razorpay_key}}",
+    amount: "{{order_obj.total_price}}",
+    currency: "INR",
+    name: "ThemeMart",
+    description: "ThemeMart Test Transactions",
+    image: "{% static 'images/favicon_TM.png' %}",
+    order_id: "{{order_obj.razorpay_order_id}}",
+    callback_url: "{{callback_url}}",
+    prefill: {
+            "name": "{{user.full_name}}",
+            "email": "{{user.email}}",
+            "contact": "{{order_obj.user_phonenumber}}"
+        },
+    theme: {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+
+rzp1.on('payment.failed', function (response){
+        // alert(response.error.code);
+        alert(response.error.description);
+        // alert(response.error.source);
+        // alert(response.error.step);
+        alert(response.error.reason);
+        // alert(response.error.metadata.order_id);
+        // alert(response.error.metadata.payment_id);
+});
+
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+{% endif %}
+{% endblock %}

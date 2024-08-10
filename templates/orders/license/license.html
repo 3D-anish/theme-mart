@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>License</title>
+</head>
+<body>
+    <div style="max-width: 880px;margin: 0 auto;padding: 30px 15px;">
+        <div style="border-top: 1px solid black; border-bottom: 1px solid black;text-align: center;">
+            <h1>Asset License Agreement</h1>
+        </div>
+        <div>
+            <p>This License Agreement ("Agreement") is made and entered into as of [{{order_obj.payment_on|date:'d/m/Y'}}] by and between ThemeMart ("Licensor") and {{order_obj.user_full_name}} ("Licensee").</p>
+        </div>
+        <hr>
+        <div>
+            <ol>
+                <li>Digital Asset Details</li>
+                <ol>
+                    <li>Asset UUID : {{order_itme_obj.asset.uuid}}</li>
+                    <li>Asset Title : {{order_itme_obj.asset.title}}</li>
+                    <li>Asset Category : {{order_itme_obj.asset.category.name}}</li>
+                    <li>Asset File Type : {{order_itme_obj.asset.file_type}}</li>
+                    <li>Asset Size : {{order_itme_obj.asset.size}}</li>
+                    <li>Asset Owner : @{{order_itme_obj.asset.user.username}} (ThemeMart's user)</li>
+                </ol>
+                <li>Licensee Details</li>
+                <ol>
+                    <li>Full Name : {{order_obj.user_full_name}}</li>
+                    <li>Email ID : {{order_obj.user_email}}</li>
+                    <li>Phone Number : {{order_obj.user_phonenumber}}</li>
+                    {% if order_obj.gst_number %}
+                    <li>GST Number : {{order_obj.gst_number}}</li>
+                    {% endif %}
+                    <li>Order ID : {{order_obj.uuid}}</li>
+                </ol>
+                <li>Licensor Details</li>
+                <ol>
+                    <li>Name : ThemeMart Pvt. Ltd.</li>
+                    <li>Email ID : contact@thememart.com</li>
+                    <li>Phone Number : 8794561234</li>
+                    <li>GST Number : 2165454658454</li>
+                </ol>
+                <li>Grant of License</li>
+                <ol>
+                    <li>The Licensor grants the Licensee a {{order_itme_obj.license.get_name_display}} of Category  {{order_itme_obj.license.asset_category.name}} to use the Digital Asset</li>
+                </ol>
+                <li>Term and Termination</li>
+                <ol>
+                    {% for license_terms in order_itme_obj.license.license_terms.all %}
+                    <li>{{license_terms.term_detail}}</li>
+                    {% endfor %}
+                </ol>
+                <li>Payment</li>
+                <ol>
+                    <li>The Licensee has paid ₹{{order_itme_obj.price}} for the License</li>
+                </ol>
+                <li>Liability and Indemnification</li>
+                <ol>
+                    <li>The Licensor shall not be liable for any damages...</li>
+                </ol>
+                <li>Ownership and Intellectual Property</li>
+                <ol>
+                    <li>The asset's owner retains all ownership rights to the Digital Asset...</li>
+                </ol>
+            </ol>
+        </div>
+        <p style="text-align: center;">--------- End Of License ---------</p>
+    </div>
+</body>
+</html>

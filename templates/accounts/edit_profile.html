@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<!-- This heading is from edit_profile.html  -->
+{% endblock %}
+
+{% block content %}
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>profile</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'main:home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+<!-- personal deatail section start -->
+<section class="contact-page register-page mb-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Account DETAIL</h3>
+                <form class="theme-form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row row">
+                        <div class="col-md-6">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" value="{{user.email}}" disabled readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                            <span class="text-danger d-block mb-1">{{form.username.errors.0}}</span>
+                            {{ form.username }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.full_name.id_for_label }}" class="form-label">Full Name</label>
+                            <span class="text-danger d-block mb-1">{{form.full_name.errors.0}}</span>
+                            {{ form.full_name }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
+                            <span class="text-danger d-block mb-1">{{form.phone_number.errors.0}}</span>
+                            {{ form.phone_number }}
+                        </div>
+                        <div class="col-md-12">
+                            <label for="{{ form.profile_image.id_for_label }}" class="form-label">Profile Image</label>
+                            {% if user.profile_image %}
+                            <img src="{{MEDIA_URL}}{{user.profile_image}}" width="200" class="mb-2 d-block ms-3" alt="Profile Image">
+                            {% endif %}
+                            <span class="text-danger d-block mb-1">{{form.profile_image.errors.0}}</span>
+                            {{ form.profile_image }}
+                        </div>
+                    </div>
+                    <h3 class="mt-5">BILLING ADDRESS</h3>
+                    <div class="form-row row">
+                        <div class="col-md-6">
+                            <label for="{{ form.address_line_1.id_for_label }}" class="form-label">Address Line 1</label>
+                            <span class="text-danger d-block mb-1">{{form.address_line_1.errors.0}}</span>
+                            {{ form.address_line_1 }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.address_line_2.id_for_label }}" class="form-label">Address Line 2</label>
+                            <span class="text-danger d-block mb-1">{{form.address_line_2.errors.0}}</span>
+                            {{ form.address_line_2 }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.address_area.id_for_label }}" class="form-label">Area</label>
+                            <span class="text-danger d-block mb-1">{{form.address_area.errors.0}}</span>
+                            {{ form.address_area }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.address_city.id_for_label }}" class="form-label">City</label>
+                            <span class="text-danger d-block mb-1">{{form.address_city.errors.0}}</span>
+                            {{ form.address_city }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.address_state.id_for_label }}" class="form-label">State</label>
+                            <span class="text-danger d-block mb-1">{{form.address_state.errors.0}}</span>
+                            {{ form.address_state }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.address_pincode.id_for_label }}" class="form-label">Pincode</label>
+                            <span class="text-danger d-block mb-1">{{form.address_pincode.errors.0}}</span>
+                            {{ form.address_pincode }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.gst_number.id_for_label }}" class="form-label">GST Number(optional)</label>
+                            <span class="text-danger d-block mb-1">{{form.gst_number.errors.0}}</span>
+                            {{ form.gst_number }}
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn btn-sm btn-solid" type="submit">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Section ends -->
+{% endblock %}
+
+{% block script %}
+<!-- This Script is from edit_profile.html  -->
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<!-- This heading is from cart.html  -->
+{% endblock %}
+
+{% block content %}
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>cart</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'main:home' %}">Home</a></li>
+                        <li class="breadcrumb-item active">cart</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+
+<!--section start-->
+<section class="cart-section section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- <div class="cart_counter">
+                    <div class="countdownholder">
+                        Your cart will be expired in<span id="timer"></span> minutes!
+                    </div>
+                    <a href="checkout.html" class="cart_checkout btn btn-solid btn-xs">check out</a>
+                </div> -->
+            </div>
+            <div class="col-sm-12 table-responsive-xs">
+                <table class="table cart-table">
+                    <thead>
+                        <tr class="table-head">
+                            <th scope="col">Asset Image</th>
+                            <th scope="col">product title</th>
+                            <th scope="col">License Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cart_page_cart_table_body" onload="update_cart_page_cart_body()">
+                        
+                    </tbody>
+                </table>
+                <div class="table-responsive-md">
+                    <table class="table cart-table ">
+                        <tfoot>
+                            <tr>
+                                <td>sub total :</td>
+                                <td>
+                                    <h2 id="cart_page_subtotal"></h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tax(GST) :</td>
+                                <td>
+                                    <h2 id="cart_page_tax"></h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>total price :</td>
+                                <td>
+                                    <h2 id="cart_page_total_price"></h2>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row cart-buttons">
+            <div class="col-6"><a href="{% url 'main:shop' %}" class="btn btn-solid">continue shopping</a></div>
+            <div class="col-6">
+                <button onclick="empty_cart()" class="btn btn-outline">Empty Cart</button>
+                {% if user.is_authenticated %}
+                <span id="chechout_form_span_container">
+                    <form style="display: inline;" action="{% url 'orders:create_order' %}" method="post">
+                        {% csrf_token %}
+                        <select hidden name="assets" id="assets" multiple>
+                        </select>
+                        <button type="submit" class="btn btn-solid">Check Out</button>
+                    </form>
+                </span>
+                {% else %}
+                <a href="{% url 'accounts:login' %}?next={{request.path}}" class="btn btn-solid">Login to checkout</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<!--section end-->
+{% endblock %}
+
+{% block script %}
+<!-- This Script is from cart.html  -->
+{% endblock %}

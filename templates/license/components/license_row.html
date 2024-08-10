@@ -1,0 +1,36 @@
+{% load static %}
+{% load humanize %}
+<tr class="add_license_form_row">
+
+    <td>{{asset_license_obj.license.get_name_display}}</td>
+    <td>{{asset_license_obj.license.license_terms.count}}</td>
+    <td>₹{{asset_license_obj.price|intcomma}}</td>
+    <td>{{asset_license_obj.date_created}}</td>
+    <td>
+        <button
+        hx-trigger="click"
+        style="border: none;"
+        hx-get="{% url 'license:get_edit_license_form' asset_pk license_pk %}"
+        hx-target="closest .add_license_form_row"
+        hx-swap="outerHTML"
+        hx-disabled-elt=".license_edit_btn"
+        hx-indicator="#edit_license_{{license_pk}}_spinner"
+        class="cart link license_edit_btn">
+        <i class="fa fa-pencil-square-o me-1"></i> 
+            <img src="{% static 'images/loader.gif' %}" id="edit_license_{{license_pk}}_spinner" class="htmx-indicator" style="width: 25px;" alt="">
+        </button>
+        <button
+        hx-trigger="click"
+        style="border: none;"
+        hx-get="{% url 'license:delete_license' asset_pk license_pk %}"
+        hx-target="closest .add_license_form_row"
+        hx-swap="outerHTML"
+        hx-confirm="Are you Sure?"
+        hx-disabled-elt=".asset_preview_delete_btn"
+        hx-indicator="#delete_license_{{license_pk}}_spinner"
+        class="cart link asset_preview_delete_btn">
+            <i class="fa fa-trash-o ms-1 text-theme"></i>
+            <img src="{% static 'images/loader.gif' %}" id="delete_license_{{license_pk}}_spinner" class="htmx-indicator" style="width: 25px;" alt="">
+        </button>
+    </td>
+</tr>

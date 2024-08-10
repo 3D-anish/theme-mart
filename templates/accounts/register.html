@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<!-- This heading is from register.html  -->
+{% endblock %}
+
+{% block content %}
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Register New Account</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'main:home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Register</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+<!--section start-->
+<section class="register-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Register New Account</h3>
+                <div class="theme-card">
+                    <form class="theme-form" method="post">
+                        {% csrf_token %}
+                        <div class="form-row row">
+                            <div class="col-md-6">
+                                <label for="{{form.username.id_for_label}}">Username</label>
+                                {% if form.username.errors %}
+                                <span class="text-danger d-block mb-1">{{form.username.errors.0}}</span>
+                                {% else %}
+                                <span id="{{ form.username.auto_id }}_helptext" class="form-text mb-1 d-block mt-0">{{ form.username.help_text }}</span>
+                                {% endif %}
+                                {{ form.username }}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{form.email.id_for_label}}">Email</label>
+                                {% if form.email.errors %}
+                                <span class="text-danger d-block mb-1">{{form.email.errors.0}}</span>
+                                {% else %}
+                                <span id="{{ form.email.auto_id }}_helptext" class="form-text mb-1 d-block mt-0">{{ form.email.help_text }}</span>
+                                {% endif %}
+                                {{ form.email }}
+                            </div>
+                        </div>
+                        <div class="form-row row">
+                            <div class="col-md-6">
+                                <label for="{{form.password.id_for_label}}">Password</label>
+                                <span class="text-danger d-block mb-1">{{form.password.errors.0}}</span>
+                                {{ form.password }}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{form.confirm_password.id_for_label}}">confirm_password</label>
+                                <span class="text-danger d-block mb-1">{{form.confirm_password.errors.0}}</span>
+                                {{ form.confirm_password }}
+                            </div>
+                            <button class="btn btn-solid w-auto" type="submit">Register Account</button>
+                            <span class="d-block mt-2 mb-1 fs-6">Already have an Account? <a href="{% url 'accounts:login' %}">Login</a></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Section ends-->
+{% endblock %}
+
+{% block script %}
+<!-- This Script is from register.html  -->
+{% endblock %}

@@ -1,0 +1,553 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block head %}
+<!-- This heading is from asset_detail.html  -->
+<style>
+    .tinymce-content ul,
+    .tinymce-content ol {
+        list-style: initial;
+        /* Reset to default browser style */
+        padding-left: 0px;
+        /* Adjust as needed */
+        margin: 0;
+        /* Adjust as needed */
+    }
+
+    .tinymce-content li {
+        margin: 0;
+        /* Adjust as needed */
+        display: block;
+    }
+
+
+    .tinymce-content table {
+        border-collapse: collapse;
+        /* Reset to default browser style */
+        width: 100%;
+        /* Adjust as needed */
+    }
+
+    .tinymce-content th,
+    .tinymce-content td {
+        border: 1px solid black;
+        /* Reset to default browser style */
+        padding: 8px;
+        /* Adjust as needed */
+    }
+</style>
+<style>
+    .star-rating {
+	white-space: nowrap;
+}
+.star-rating [type="radio"] {
+	appearance: none;
+}
+.star-rating i {
+	font-size: 1.2em;
+	transition: 0.3s;
+}
+
+.star-rating label:is(:hover, :has(~ :hover)) i {
+	transform: scale(1.35);
+	color: #ffee00;
+	animation: jump 0.5s calc(0.3s + (var(--i) - 1) * 0.15s) alternate infinite;
+}
+.star-rating label:has(~ :checked) i {
+	color: #ffee00;
+    fill: #faec1b;
+	/* text-shadow: 0 0 2px #ffffff, 0 0 10px #ffee58; */
+}
+
+@keyframes jump {
+	0%,
+	50% {
+		transform: translatey(0) scale(1.35);
+	}
+	100% {
+		transform: translatey(-15%) scale(1.35);
+	}
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- breadcrumb start -->
+<!-- <div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>product details</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'main:home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">product</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div> -->
+<!-- breadcrumb End -->
+
+<!-- section start -->
+<section>
+    <div class="collection-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-10 col-xs-12">
+                    <div class="product-right-slick">
+                        {% if asset_obj.asset_preview_images.all %}
+                        {% for image in asset_obj.asset_preview_images.all %}
+                        <a href="{{MEDIA_URL}}{{image.image}}" target="_blank"><div><img src="{{MEDIA_URL}}{{image.image}}" alt="Asset Preview Images"
+                                class="img-fluid blur-up lazyload image_zoom_cls-0"></div></a>
+                        {% endfor %}
+                        {% else %}
+                        <div><img src="{% static 'images/no_image_V.png' %}" alt="Asset Preview Images"
+                                class="img-fluid blur-up lazyload image_zoom_cls-0"></div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-1 col-sm-2 col-xs-12">
+                    <div class="row">
+                        <div class="col-12 p-0">
+                            <div class="slider-right-nav">
+                                {% if asset_obj.asset_preview_images.all %}
+                                {% for image in asset_obj.asset_preview_images.all %}
+                                <div><img src="{{MEDIA_URL}}{{image.image}}" alt="Asset Preview Images"
+                                        class="img-fluid blur-up lazyload"></div>
+                                {% endfor %}
+                                {% else %}
+                                <div><img src="{% static 'images/no_image_V.png' %}" alt="Asset Preview Images"
+                                        class="img-fluid blur-up lazyload"></div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="product-right product-description-box">
+                        <div class="product-count">
+                            <ul>
+                                <li>
+                                    {% if total_orders >= 10 %}
+                                    <img src="{% static 'images/fire.gif' %}" class="img-fluid" alt="image">
+                                    {% endif %}
+                                    <span class="p-counter">{{total_orders}}</span>
+                                    <span class="lang">order{% if total_orders > 1 %}s{% endif %} in last 24 hours</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="rating">
+                            {% for i in asset_obj.get_rating %}
+                                {% if forloop.counter == 1 %}
+                                    {{i}}&nbsp;
+                                {% elif forloop.counter == 7 %}
+                                    <span>{{i}} rating{% if i > 1 %}s{% endif %}</span>
+                                {% else %}
+                                    <i class="fa fa-star" {% if i == 1 %} style="color: #ffa200;" {% else %} style="color: #ddd;" {% endif %}></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <h2 style="word-wrap: break-word;">{{asset_obj.title}}</h2>
+                        <div class="border-product">
+                            <h6 class="product-title">product description</h6>
+                            <p style="word-break: break-all;">{{asset_obj.meta_description}}</p>
+                        </div>
+                        <div class="single-product-tables border-product detail-section">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>License:</td>
+                                        <td>{{license.license.get_name_display}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>File Type:</td>
+                                        <td>{{asset_obj.file_type}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Uploaded:</td>
+                                        <td>{{asset_obj.date_created|date:'d M, Y'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="border-product">
+                            <h6 class="product-title">share it</h6>
+                            <div class="product-icon">
+                                <ul class="product-social">
+                                    <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-rss"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="border-product">
+                            <h6 class="product-title">100% SECURE PAYMENT</h6>
+                            <div class="payment-card-bottom">
+                                <ul>
+                                    <li>
+                                        <a href="#"><img src="{% static 'images/visa.png' %}" alt=""></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><img src="{% static 'images/mastercard.png' %}" alt=""></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><img src="{% static 'images/paypal.png' %}" alt=""></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><img src="{% static 'images/american-express.png' %}" alt=""></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><img src="{% static 'images/discover.png' %}" alt=""></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="product-right product-form-box">
+                        <!-- <h4><del>$459.00</del><span>55% off</span></h4> -->
+                        <h3>₹ {{license.price|intcomma}}</h3>
+                        <!-- <ul class="color-variant">
+                            <li class="bg-light0 active"></li>
+                            <li class="bg-light1"></li>
+                            <li class="bg-light2"></li>
+                        </ul> -->
+                        <div id="selectSize" class="addeffect-section product-description border-product">
+                            <!-- <h6 class="product-title">More Licenses</h6>
+                            <div class="timer">
+                                <p id="demo"></p>
+                            </div> -->
+                            <a href="#" class="fs-6" style="color: red;font-weight: bolder;">{{license.license.get_name_display}} (Selected)</a>
+                            <h6 class="product-title">--- More Licenses ---</h6>
+                            <!-- <div class="modal fade" id="sizemodal" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Sheer Straight Kurta</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body"><img src="../assets/images/size-chart.jpg" alt=""
+                                                class="img-fluid blur-up lazyload"></div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <h6 class="error-message">please select size</h6> -->
+                            <div class="">
+                                <ul>
+                                    {% if other_licenses %}
+                                    {% for license in other_licenses %}
+                                    <li><a class="fs-6"
+                                            href="{% url 'assets:asset_detail' asset_obj.uuid %}?license={{license.license.name}}">{{license.license.get_name_display}}</a>
+                                    </li><br>
+                                    {% endfor %}
+                                    {% else %}
+                                    <li><a href="#">--- No More License is available ---</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            <!-- <h6 class="product-title">quantity</h6>
+                            <div class="qty-box">
+                                <div class="input-group"><span class="input-group-prepend"><button type="button"
+                                            class="btn quantity-left-minus" data-type="minus" data-field=""><i
+                                                class="ti-angle-left"></i></button> </span>
+                                    <input type="text" name="quantity" class="form-control input-number" value="1">
+                                    <span class="input-group-prepend"><button type="button"
+                                            class="btn quantity-right-plus" data-type="plus" data-field=""><i
+                                                class="ti-angle-right"></i></button></span>
+                                </div>
+                            </div> -->
+                        </div>
+                        {% if license %}
+                        <div class="product-buttons">
+                            {% if user.is_authenticated %}
+                            <form style="display: inline;" action="{% url 'orders:create_order' %}" method="post">
+                                {% csrf_token %}
+                                <select hidden name="assets" id="assets" multiple>
+                                    <option value="{{asset_obj.pk}}_{{license.pk}}" selected>{{asset_obj.pk}}</option>
+                                </select>
+                                <button type="submit" class="btn btn-solid">Buy Now</button>
+                            </form>
+                            {% else %}
+                            <a href="{% url 'accounts:login' %}?next={{request.path}}" class="btn btn-solid">Login to
+                                Buy Asset</a>
+                            {% endif %}
+                            <button onclick="add_to_cart(this)" id="{{asset_obj.pk}}@_@{{asset_obj.title}}@_@{% url 'assets:asset_detail' asset_obj.uuid %}?license={{license.license.name}}@_@{{MEDIA_URL}}{{asset_obj.asset_preview_images.all.0.image}}@_@{{license.price}}@_@{{license.license}}@_@{{license.pk}}" onclick="add_to_cart(this)" title="Add to cart"
+                                class="btn btn-solid hover-solid btn-animation add-to-cart">add to cart</button>
+                            <!-- <a href="#" class="btn btn-solid">wishlist</a> -->
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Section ends -->
+
+
+<!-- product-tab starts -->
+<section class="tab-product m-0 mb-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-lg-12">
+                <ul class="nav nav-tabs nav-material" id="top-tab" role="tablist">
+                    <li class="nav-item"><a class="nav-link {% if not feedback_form %} active{% endif %}" id="top-home-tab" data-bs-toggle="tab"
+                            href="#top-home" role="tab" aria-selected="true"><i
+                                class="icofont icofont-ui-home"></i>Details</a>
+                        <div class="material-border"></div>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" id="profile-top-tab" data-bs-toggle="tab"
+                            href="#top-profile" role="tab" aria-selected="false"><i
+                                class="icofont icofont-man-in-glasses"></i>Specification</a>
+                        <div class="material-border"></div>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" id="contact-top-tab" data-bs-toggle="tab"
+                            href="#top-contact" role="tab" aria-selected="false"><i
+                                class="icofont icofont-contacts"></i>License Description</a>
+                        <div class="material-border"></div>
+                    </li>
+                    <li class="nav-item"><a class="nav-link {% if feedback_form %} active{% endif %}" id="review-top-tab" data-bs-toggle="tab" href="#top-review"
+                            role="tab" aria-selected="false"><i class="icofont icofont-contacts"></i>{% if feedback_form %} write review {% else %}Reviews{% endif %}</a>
+                        <div class="material-border"></div>
+                    </li>
+                </ul>
+                <div class="tab-content nav-material" id="top-tabContent">
+                    <div class="tab-pane fade {% if not feedback_form %} show active{% endif %} tinymce-content" id="top-home" role="tabpanel"
+                        aria-labelledby="top-home-tab">
+                        {{asset_obj.description|safe}}
+                    </div>
+                    <div class="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
+                        <div class="single-product-tables">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Seller's username</td>
+                                        <td><a href="{% url 'seller:seller_store' asset_obj.user.username %}">@{{asset_obj.user}}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Category</td>
+                                        <td>{{asset_obj.category}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tags</td>
+                                        <td>
+                                            {% for tag in asset_obj.tags.all %}
+                                            <a href="#">{{tag.name}}</a>,
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>File Type</td>
+                                        <td>{{asset_obj.file_type}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>File Size</td>
+                                        <td>{{asset_obj.size}}MB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date Uploaded</td>
+                                        <td>{{asset_obj.date_created|date:'d M, Y'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="top-contact" role="tabpanel" aria-labelledby="contact-top-tab">
+                        <section class="faq-section section-b-space pt-0">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="accordion theme-accordion" id="accordionExample">
+                                            {% for term in license.license.license_terms.all %}
+                                            <div class="card">
+                                                <div class="card-header" id="heading{{term.pk}}">
+                                                    <h5 class="mb-0"><button class="btn btn-link collapsed"
+                                                            type="button" data-bs-toggle="collapse"
+                                                            data-bs-target="#collapse{{term.pk}}" aria-expanded="true"
+                                                            aria-controls="collapse{{term.pk}}">{{term.term_title}}</button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapse{{term.pk}}" class="collapse"
+                                                    aria-labelledby="heading{{term.pk}}"
+                                                    data-bs-parent="#accordionExample">
+                                                    <div class="card-body">
+                                                        <p>{{term.term_detail}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="tab-pane fade {% if feedback_form %} show active{% endif %} " id="top-review" role="tabpanel" aria-labelledby="review-top-tab">
+                        {% if feedback_form %}
+                        <form method="post" class="theme-form">
+                            {% csrf_token %}
+                            <div class="form-row row">
+                                <div class="col-md-12">
+                                    <div style="color: red;display: block;">{{feedback_form.rating.errors.0}}</div>
+                                    <div class="media">
+                                        <label>Rating</label>
+                                        <div class="media-body ms-3">
+                                            <span class="star-rating">
+                                                <label for="rate-1" style="--i:1"><i class="fa fa-star"></i></label>
+                                                <input type="radio" name="rating" id="rate-1" value="1">
+                                                <label for="rate-2" style="--i:2"><i class="fa fa-star"></i></label>
+                                                <input type="radio" name="rating" id="rate-2" value="2" checked>
+                                                <label for="rate-3" style="--i:3"><i class="fa fa-star"></i></label>
+                                                <input type="radio" name="rating" id="rate-3" value="3">
+                                                <label for="rate-4" style="--i:4"><i class="fa fa-star"></i></label>
+                                                <input type="radio" name="rating" id="rate-4" value="4">
+                                                <label for="rate-5" style="--i:5"><i class="fa fa-star"></i></label>
+                                                <input type="radio" name="rating" id="rate-5" value="5">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="{{feedback_form.feedback.id_for_label}}">Feedback</label>
+                                    <span style="color: red;display: block;">{{feedback_form.feedback.errors.0}}</span>
+                                    {{feedback_form.feedback}}
+                                </div>
+                                    {{feedback_form.order}}
+                                    {{feedback_form.user}}
+                                    {{feedback_form.asset}}
+
+                                <div class="col-md-12">
+                                    <button class="btn btn-solid" type="submit">Submit Your
+                                        Review</button>
+                                </div>
+                            </div>
+                        </form>
+                        {% endif %}
+                        <section class="section-b-space blog-detail-page review-page">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <ul class="comment-section">
+                                            {% for feedback in asset_obj.feedbacks.all %}
+                                            <li style="width: 100%;">
+                                                <div class="media">
+                                                    {% if feedback.user.profile_image %}
+                                                    <img src="{{MEDIA_URL}}{{feedback.user.profile_image}}" alt="Generic placeholder image">
+                                                    {% else %}
+                                                    <img src="{% static 'images/profile.png' %}" alt="Generic placeholder image">
+                                                    {% endif %}
+                                                    <div class="media-body">
+                                                        <h6>{{feedback.user.full_name}}{% if feedback.user == user %}(You){% endif %} <span>( {{feedback.date_created|date:'d-M-Y'}} )</span></h6>
+                                                        <P>
+                                                            <div class="rating">
+                                                                {% for i in '12345'|make_list %}
+                                                                    <i class="fa fa-star" {% if i <= feedback.rating|stringformat:"d" %} style="color: #ffa200;" {% else %} style="color: #ddd;" {% endif %}></i>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </P>
+                                                        <p>{{feedback.feedback}}</p>
+                                                        {% if feedback.user == user %}
+                                                        <ul class="comnt-sec">
+                                                            <li>
+                                                                <a href="{% url 'assets:delete_feedback' feedback.pk %}">
+                                                                    <i class="ti-trash"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- product-tab ends -->
+
+
+<!-- product section start -->
+<section class="section-b-space ratio_asos">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 product-related">
+                <h2>related assets</h2>
+            </div>
+        </div>
+        <div class="row search-product">
+            {% if related_products %}
+            {% for asset_obj in related_products %}
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="product-box">
+                    <div class="img-wrapper">
+                        <div class="front">
+                            <a href="{% url 'assets:asset_detail' asset_obj.uuid %}"><img src="{{MEDIA_URL}}{{asset_obj.asset_preview_images.all.0.image}}"
+                                    class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                        </div>
+                        <div class="back">
+                            <a href="{% url 'assets:asset_detail' asset_obj.uuid %}"><img src="{{MEDIA_URL}}{{asset_obj.asset_preview_images.all.1.image}}"
+                                    class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                        </div>
+                        <div class="cart-box cart-box-bottom">
+                            <button id="{{asset_obj.pk}}@_@{{asset_obj.title}}@_@{% url 'assets:asset_detail' asset_obj.uuid %}?license={{asset_obj.licenses.all.0.license.name}}@_@{{MEDIA_URL}}{{asset_obj.asset_preview_images.all.0.image}}@_@{{asset_obj.licenses.all.0.price}}@_@{{asset_obj.licenses.all.0.license}}@_@{{asset_obj.licenses.all.0.pk}}" onclick="add_to_cart(this)"
+                             title="Add to cart"><i
+                                    class="ti-shopping-cart"></i></button> 
+                        </div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="rating">
+                            {% for i in asset_obj.get_rating %}
+                                {% if forloop.counter == 1 %}
+                                    {{i}}&nbsp;
+                                {% elif forloop.counter == 7 %}
+                                    <span>{{i}} rating{% if i > 1 %}s{% endif %}</span>
+                                {% else %}
+                                    <i class="fa fa-star" {% if i == 1 %} style="color: #ffa200;" {% else %} style="color: #ddd;" {% endif %}></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <a href="{% url 'assets:asset_detail' asset_obj.uuid %}">
+                            <h6>{{asset_obj.title}}</h6>
+                        </a>
+                        <h4>₹{{asset_obj.licenses.all.0.price}}</h4>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+                <p class="text-center m-3 fs-3">--- No Related Asset Found ---</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+<!-- product section end -->
+
+{% endblock %}
+
+{% block script %}
+<!-- This Script is from asset_detail.html  -->
+{% endblock %}

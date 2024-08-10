@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Invoice</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        #customers {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #customers td, #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+        #customers tr:hover {background-color: #ddd;}
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div style="max-width: 880px;margin: 0 auto;padding: 30px 15px;">
+        <div style="border-top: 1px solid black; border-bottom: 1px solid black;text-align: center;">
+            <h1>Invoice</h1>
+        </div>
+        <div style="display: flex;align-items: center; justify-content: space-between; margin: 10px;">
+            <div style="max-width: 50%;">
+                <h2>Invoice To:</h2>
+                <p>Customer Name :&nbsp;  {{order_obj.user_full_name}}</p>
+                <p>Customer Email :&nbsp;  {{order_obj.user_email}}</p>
+                <p>Phone Number&nbsp; &nbsp;:&nbsp;  {{order_obj.user_phonenumber}}</p>
+                <div style="display: flex; align-items:start;justify-content: left;">Billing Address &nbsp;: 
+                    <div style="margin-left: 10px;">
+                        {{order_obj.address_line_1}},<br>
+                        {{order_obj.address_line_2}},<br>
+                        {{order_obj.address_area}}, {{order_obj.address_city}},<br>
+                        {{order_obj.address_state}} - {{order_obj.address_pincode}} <br>
+                    </div>
+                </div>
+                {% if order_obj.gst_number %}
+                <p>GST Number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;  {{order_obj.gst_number}}</p>
+                {% endif %}
+                <p>Payment Date&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;  {{order_obj.payment_on|date:'d M, Y | H:i:s'}}</p>
+                <p>Order ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{order_obj.uuid}}</p>
+                <p>Invoice Date&nbsp;&nbsp;&nbsp;&nbsp;: {% now "d/m/Y" %}</p>
+            </div>
+            <div style="max-width: 50%;text-align: end; align-self: self-end top;">
+                <p style="text-align: end;"><b>ThemeMart</p>
+                <div style="display: flex; align-items:start;justify-content: left;">
+                    <div style="margin-left: 10px;">
+                    510, Satva Icon, Vatral,<br>
+                    Ahmedabad, Gujarat - 382418<br>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div style="margin-top: 30px;">
+        <table id="customers">
+            <thead> 
+                <th style="width: 5%;">#</th>
+                <th style="width: 45%;">Asset</th>
+                <th style="width: 30%;">License</th>
+                <th style="width: 20%;">Price</th>
+            </thead>
+            <tbody >
+                {% for order_item in order_item_objs %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{order_item.asset.title}}</td>
+                    <td>{{order_item.license}}</td>
+                    <td>₹{{order_item.price}}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="3" style="text-align: end;">Sub Total :</td>
+                    <td colspan="1">₹{{order_obj.sub_total}}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: end;">Tax(GST) :</td>
+                    <td colspan="1">₹{{order_obj.gst}}</td>
+                </tr>
+                <hr>
+                <tr>
+                    <td colspan="3" style="text-align: end;">Total Price :</td>
+                    <td colspan="1">₹{{order_obj.total_price}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p style="text-align: center;margin-top: 10px;"><b>Note: </b> This is computer generated receipt and does not require physical signature.</p>
+</body>
+</html>

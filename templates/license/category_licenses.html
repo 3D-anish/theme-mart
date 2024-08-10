@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<!-- This heading is from category_licenses.html  -->
+{% endblock %}
+
+{% block content %}
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>{{asset_category_obj.name}} Licenses</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'main:home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'license:licenses' %}">Licenses</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{asset_category_obj.name}}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if licenses %}
+{% for license in licenses %}
+<!-- breadcrumb End -->
+<div class="title1 section-t-space">
+    <!-- <h4>special offers</h4> -->
+    <h2 class="title-inner1">{{license.get_name_display}}</h2>
+</div>
+<!--section start-->
+<section class="faq-section section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="accordion theme-accordion" id="{{license.pk}}">
+                    {% for license_term in license.license_terms.all %}
+                    <div class="card">
+                        <div class="card-header" id="{{license.pk}}_{{license_term.pk}}">
+                            <h5 class="mb-0"><button class="btn btn-link" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse{{license_term.pk}}" aria-expanded="true"
+                                    aria-controls="collapse{{license_term.pk}}">{{license_term.term_title}}</button></h5>
+                        </div>
+                        <div id="collapse{{license_term.pk}}" class="collapse" aria-labelledby="{{license.pk}}_{{license_term.pk}}"
+                            data-bs-parent="#{{license.pk}}">
+                            <div class="card-body">
+                                <p>{{license_term.term_detail}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Section ends-->
+{% endfor %}
+{% else %}
+<p class="text-center my-5 fs-1">--- No Licenses Are Available ---</p>
+{% endif %}
+{% endblock %}
+
+{% block script %}
+<!-- This Script is from category_licenses.html  -->
+{% endblock %}

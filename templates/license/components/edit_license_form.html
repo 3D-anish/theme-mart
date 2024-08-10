@@ -1,0 +1,25 @@
+{% load static %}
+<tr class="add_license_form_row">
+    <td colspan="4">
+        <form
+        hx-post="{% url 'license:edit_license' asset_pk license_pk %}"
+        hx-swap="outerHTML"
+        hx-disabled-elt=".license_form_sub_btn"
+        hx-target="closest .add_license_form_row"
+        hx-indicator="#save_license_{{license_pk}}_btn_spinner"
+        class="d-flex" method="post">
+                {% csrf_token %}
+                <span style="width: 300px;">
+                    <span class="text-danger d-block mb-1">{{form.license.errors.0}}</span>
+                    {{ form.license }}
+                </span>
+                <span style="width: 200px;" class="ms-2">
+                    <span class="text-danger d-block mb-1">{{form.price.errors.0}}</span>
+                    {{ form.price }}
+                </span>
+            <button type="submit" class="license_form_sub_btn ms-2 btn btn-solid w-auto">Save
+            <img src="{% static 'images/loader.gif' %}" id="save_license_{{license_pk}}_btn_spinner" class="htmx-indicator" style="width: 25px;" alt="">
+            </button>
+        </form>
+    </td> 
+</tr>

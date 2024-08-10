@@ -1,0 +1,298 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block head %}
+<!-- This heading is from edit_asset.html  -->
+<script src="{% static 'tinymce_7.2.1/tinymce/tinymce.min.js' %}"></script>
+<script>
+    tinymce.init({
+        selector: 'textarea#{{form.description.auto_id}}',
+        plugins:
+            'accordion anchor autolink autoresize advlist autosave image codesample charmap emoticons fullscreen help insertdatetime lists link media nonbreaking preview searchreplace save table visualblocks visualchars wordcount',
+
+        toolbar1: 'undo redo | styles fontfamily fontsize | forecolor backcolor removeformat | numlist bullist  | searchreplace',
+        help_tabs: [
+            'shortcuts',
+            'keyboardnav',
+        ],
+        max_height : 500,
+        promotion: false,
+
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Asset : {{asset_obj.title|truncatechars:50}}</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'main:home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'assets:my_assets' %}">My Assets</a></li>
+                        <li class="breadcrumb-item active">Edit Asset</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+
+<!--section start-->
+<section class="login-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 mb-5">
+                <div class="d-flex">
+                    <h3>Edit Asset </h3>
+                    <span>&nbsp; &nbsp;</span>
+                    (<a href="{% url 'assets:asset_detail' asset_obj.uuid %}">View Asset</a>)
+                </div>
+                <div class="theme-card">
+                    <form class="theme-form" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="{{form.title.id_for_label}}" class="form-label">Title</label>
+                            {% if form.title.errors.0 %}
+                            <div class="text-danger mb-2">{{form.title.errors.0}}</div>
+                            {% else %}
+                            <div id="{{ form.title.auto_id }}_helptext" style="color:blue;" class="form-text mb-2">{{ asset_obj.get_eligible_for_publish_dict.title }}
+                            </div>
+                            {% endif %}
+                            {{ form.title }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{form.meta_description.id_for_label}}"
+                            class="form-label">meta description</label>
+                            {% if form.meta_description.errors.0 %}
+                            <div class="text-danger mb-2">{{form.meta_description.errors.0}}</div>
+                            {% else %}
+                            <div id="{{ form.meta_description.auto_id }}_helptext" style="color:blue;" class="form-text mb-2">
+                                {{ asset_obj.get_eligible_for_publish_dict.meta_description }}</div>
+                            {% endif %}
+                            {{ form.meta_description }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{form.description.id_for_label}}" class="form-label">description</label>
+                            {% if form.description.errors.0 %}
+                            <div class="text-danger mb-2">{{form.description.errors.0}}</div>
+                            {% else %}
+                            <div id="{{ form.description.auto_id }}_helptext" style="color:blue;" class="form-text mb-2">
+                                {{ asset_obj.get_eligible_for_publish_dict.description }}</div>
+                            {% endif %}
+                            {{ form.description }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{form.tags.id_for_label}}" class="form-label">Tags</label>
+                            {% if form.tags.errors.0 %}
+                            <div class="text-danger mb-2">{{form.tags.errors.0}}</div>
+                            {% else %}
+                            <div id="{{ form.tags.auto_id }}_helptext" class="form-text mb-2">{{ form.tags.help_text}}</div>
+                            <div id="{{ form.tags.auto_id }}_helptext" style="color:blue;" class="form-text mb-2">{{ asset_obj.get_eligible_for_publish_dict.tags }}</div>
+                            {% endif %}
+                            {{ form.tags }}
+                        </div>
+                        <button class="btn btn-solid" type="submit">Save</button>
+                        {% if not asset_obj.status == 'published' %}
+                            {% if asset_obj.is_eligible_for_publish %}
+                            <a href="{% url 'assets:publish_asset' asset_obj.pk %}" class="btn btn-solid ms-2">Publish</a>
+                            {% endif %}
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-3 mb-5 right-login">
+                <h3>Asset Details</h3>
+                <div class="theme-card">
+                    <form class="theme-form">
+                        <div class="form-group">
+                            <label for="id_category">Category</label>
+                            <input type="text" readonly class="form-control" disabled
+                            value="{{asset_obj.category.name}}" id="id_category">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_file_Type" class="form-label">Asset File Type</label>
+                            <input type="text" readonly class="form-control" disabled
+                            value="{{asset_obj.file_type}}" id="id_file_Type">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_size" class="form-label">Asset Size(MB)</label>
+                            <input type="number" readonly class="form-control" disabled value="{{asset_obj.size}}"
+                            id="id_size">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_status" class="form-label">Status</label>
+                            <input type="text" readonly class="form-control" disabled
+                            value="{{asset_obj.get_status_display}}" id="id_status">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_date_created" class="form-label">Date Created</label>
+                            <input type="text" readonly class="form-control" disabled value="{{asset_obj.date_created}}"
+                            id="id_date_created">
+                        </div>
+                        {% if asset_obj.status == 'published' %}
+                        <div class="form-group">
+                            <label for="id_date_updated" class="form-label">Date Published</label>
+                            <input type="text" readonly class="form-control" disabled value="{{asset_obj.date_published}}"
+                            id="id_date_updated">
+                        </div>
+                        {% else %}
+                        <div class="form-group">
+                            <label for="id_date_updated" class="form-label">Date Updated</label>
+                            <input type="text" readonly class="form-control" disabled value="{{asset_obj.date_updated}}"
+                            id="id_date_updated">
+                        </div>
+                        {% endif %}
+                        <div class="form-group">
+                            <label for="id_uuid" class="form-label">UUID</label>
+                            <input type="text" readonly class="form-control" disabled value="{{asset_obj.uuid}}"
+                            id="id_uuid">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-5 right-login">
+                <h3>Preview Images</h3>
+                <div class="theme-card">
+                    <div class="text-center mb-3" style="color:blue;">{{ asset_obj.get_eligible_for_publish_dict.asset_preview_images }}</div>
+                    <div class="col-sm-12 table-responsive-xs" style="overflow-x:auto">
+                        <table class="table cart-table">
+                            <thead>
+                                <tr class="table-head">
+                                    <th scope="col">Priview image</th>
+                                    <th scope="col">Date Created</th>
+                                    <th scope="col">action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="preview_image_table">
+                                {% if asset_obj.asset_preview_images.all %}
+                                    {% for image in asset_obj.asset_preview_images.all %}
+                                        <tr class="add_preview_image_form_row">
+                                            <td><img width="200" src="{{MEDIA_URL}}{{image.image}}" alt="preview_image"></td>
+                                            <td>{{image.date_created}}</td>
+                                            <td>
+                                                <button
+                                                hx-trigger="click"
+                                                style="border: none;"
+                                                hx-get="{% url 'assets:delete_asset_preview_image' asset_obj.pk image.pk %}"
+                                                hx-target="closest .add_preview_image_form_row"
+                                                hx-swap="outerHTML"
+                                                hx-confirm="Are you Sure?"
+                                                hx-disabled-elt=".asset_preview_delete_btn"
+                                                hx-indicator="#delete_image_{{image.pk}}_spinner"
+                                                class="cart link asset_preview_delete_btn">
+                                                    <i class="fa fa-trash-o ms-1 text-theme"></i>
+                                                    <img src="{% static 'images/loader.gif' %}" id="delete_image_{{image.pk}}_spinner" class="htmx-indicator" style="width: 25px;" alt="">
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-12 mt-3" style="display: flex;flex-direction: row-reverse;">
+                        {% if not asset_obj.asset_preview_images.all|length >= 10 %}
+                        <button
+                        hx-trigger="click"
+                        hx-disabled-elt="this"
+                        hx-get="{% url 'assets:get_add_asset_preview_image_form' asset_obj.pk %}" 
+                        hx-target="#preview_image_table"
+                        hx-swap="beforeend"
+                        hx-indicator="#add_asset_preview_image_btn"
+                        class="btn btn-solid">Add Preview Image
+                        <img src="{% static 'images/loader.gif' %}" id="add_asset_preview_image_btn" class="htmx-indicator" style="width: 25px;" alt="">
+                        </button> 
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-5 right-login">
+                <h3>Licenses</h3>
+                <div class="theme-card">
+                    <div class="text-center mb-3" style="color:blue;">{{ asset_obj.get_eligible_for_publish_dict.licenses }}</div>
+                    <div class="col-sm-12 table-responsive-xs" style="overflow-x:auto">
+                        <table class="table cart-table">
+                            <thead>
+                                <tr class="table-head">
+                                    <th scope="col">License Type</th>
+                                    <th scope="col">License Terms</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Date Created</th>
+                                    <th scope="col">action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="license_table">
+                                {% if asset_obj.licenses.all %}
+                                    {% for license in asset_obj.licenses.all %}
+                                        <tr class="add_license_form_row">
+                                            <td>{{license.license.get_name_display}}</td>
+                                            <td>{{license.license.license_terms.count}}</td>
+                                            <td>₹{{license.price|intcomma}}</td>
+                                            <td>{{license.date_created}}</td>
+                                            <td>
+                                                <button
+                                                hx-trigger="click"
+                                                style="border: none;"
+                                                hx-get="{% url 'license:get_edit_license_form' asset_obj.pk license.pk %}"
+                                                hx-target="closest .add_license_form_row"
+                                                hx-swap="outerHTML"
+                                                hx-disabled-elt=".license_edit_btn"
+                                                hx-indicator="#edit_license_{{license.pk}}_spinner"
+                                                class="cart link license_edit_btn">
+                                                <i class="fa fa-pencil-square-o me-1"></i> 
+                                                    <img src="{% static 'images/loader.gif' %}" id="edit_license_{{license.pk}}_spinner" class="htmx-indicator" style="width: 25px;" alt="">
+                                                </button>
+                                                <button
+                                                hx-trigger="click"
+                                                style="border: none;"
+                                                hx-get="{% url 'license:delete_license' asset_obj.pk license.pk %}"
+                                                hx-target="closest .add_license_form_row"
+                                                hx-swap="outerHTML"
+                                                hx-confirm="Are you Sure?"
+                                                hx-disabled-elt=".asset_preview_delete_btn"
+                                                hx-indicator="#delete_license_{{license.pk}}_spinner"
+                                                class="cart link asset_preview_delete_btn">
+                                                    <i class="fa fa-trash-o ms-1 text-theme"></i>
+                                                    <img src="{% static 'images/loader.gif' %}" id="delete_license_{{license.pk}}_spinner" class="htmx-indicator" style="width: 25px;" alt="">
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-12 mt-3" style="display: flex;flex-direction: row-reverse;">
+                        <button
+                        hx-trigger="click"
+                        hx-disabled-elt="this"
+                        hx-get="{% url 'license:get_add_license_form' asset_obj.pk %}" 
+                        hx-target="#license_table"
+                        hx-swap="beforeend"
+                        hx-indicator="#add_license_btn"
+                        class="btn btn-solid">Add License
+                        <img src="{% static 'images/loader.gif' %}" id="add_license_btn" class="htmx-indicator" style="width: 25px;" alt="">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Section ends-->
+{% endblock %}
+
+{% block script %}
+<!-- This Script is from edit_asset.html  -->
+{% endblock %}

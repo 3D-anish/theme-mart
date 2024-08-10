@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f6f6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+        }
+        .content h2 {
+            color: #333;
+        }
+        .content p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .footer {
+            background-color: #f6f6f6;
+            color: #888;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to ThemeMart!</h1>
+        </div>
+        <div class="content">
+            <h2>Hi @{{username}},</h2>
+            <p>
+                Congratulations on successfully registering as a seller on ThemeMart! We're thrilled to have you join our community of creative professionals. 
+            </p>
+            <p>
+                You can now start uploading and selling your amazing digital assets. Our platform offers a wide range of features to help you showcase and sell your work to a global audience.
+            </p>
+            <p>
+                <a href="http://{{site_domain}}/assets/create/" class="button">Sell Assets</a>
+            </p>
+            <p>
+                If you have any questions or need assistance, feel free to contact our support team at <a href="mailto:support@thememart.com">support@thememart.com</a>.
+            </p>
+            <p>
+                Welcome aboard, and we look forward to seeing your success on ThemeMart!
+            </p>
+            <p>
+                Best regards,<br>
+                The ThemeMart Team
+            </p>
+        </div>
+        <div class="footer">
+            &copy; 2024 ThemeMart. All rights reserved.<br>
+            You are receiving this email because you registered as a seller on ThemeMart.
+        </div>
+    </div>
+</body>
+</html>
